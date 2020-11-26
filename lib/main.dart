@@ -5,11 +5,14 @@ import 'package:formvalidation/src/pages/cart_page.dart';
 import 'package:formvalidation/src/pages/detalle_page.dart';
 import 'package:formvalidation/src/pages/forgotpassword_page.dart';
 import 'package:formvalidation/src/pages/garage_page.dart';
+import 'package:formvalidation/src/pages/hoja_vida_vehic_page.dart';
 
 import 'package:formvalidation/src/pages/home_page.dart';
 import 'package:formvalidation/src/pages/login_page.dart';
+import 'package:formvalidation/src/pages/mis_vehiculos_page.dart';
 import 'package:formvalidation/src/pages/producto_page.dart';
 import 'package:formvalidation/src/pages/registro_page.dart';
+import 'package:formvalidation/src/pages/tab_control_page.dart';
 import 'package:formvalidation/src/preferencias_usuario/preferencias_usuario.dart';
 
 void main() async {
@@ -40,6 +43,9 @@ class MyApp extends StatelessWidget {
           'cart': (BuildContext context) => CartPage(),
           'forgotpassword': (BuildContext context) => ForgotPage(),
           'garagepage': (BuildContext context) => GaragePage(),
+          'tabcontrol': (BuildContext context) => TableroControl(),
+          'misvehiculos': (BuildContext context) => MisVehiculos(),
+          'hojavidavehi': (BuildContext context) => HojavidaVehi(),
         },
         theme: ThemeData(
           primaryColor: Colors.grey[700],

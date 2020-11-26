@@ -13,12 +13,11 @@ class _GaragePageState extends State<GaragePage> {
   @override
   Widget build(BuildContext context) {
     final garageBloc = Provider.garageBloc(context);
-
     garageBloc.cargarProductos();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('garagepage'),
+        title: Text('Garage'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -26,74 +25,71 @@ class _GaragePageState extends State<GaragePage> {
               showSearch(context: context, delegate: DataSearch());
             },
           ),
-          IconButton(
-            icon: Icon(
-              Icons.shopping_cart,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, 'cart');
-            },
-          ),
         ],
       ),
-
-      body: _crearListado(garageBloc),
-      // floatingActionButton: _crearBoton(context),
+      //---body---
+      body: _listaBotones(),
     );
   }
 
-  Widget _crearListado(GarageBloc garageBloc) {
-    return StreamBuilder(
-      stream: garageBloc.productosStream,
-      builder:
-          (BuildContext context, AsyncSnapshot<List<GarageModel>> snapshot) {
-        /*if (snapshot.hasData) {
-          final garages = snapshot.data;
+  //diseño de la pantalla
 
-          return ListView.builder(
-            itemCount: garages.length,
-            itemBuilder: (context, i) =>
-                _crearItem(context, garageBloc, garages[i]),
-          );
-        } else {*/
-        return Center(child: CircularProgressIndicator());
-        //}
-      },
-    );
+  //-------Botones de mi garaje
+
+  Widget _botonTableroControl() {
+    return RaisedButton(
+        child: Container(
+          padding: EdgeInsets.all(15.0),
+          child: Text('Tablero de control'),
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+        elevation: 0.0,
+        color: Colors.grey[700],
+        textColor: Colors.white,
+        onPressed: () => Navigator.pushNamed(context, 'tabcontrol'));
   }
 
-  /* Widget _crearItem(
-      BuildContext context, GarageBloc garageBloc, GarageModel garage) {
-    return Center(
-        // key: UniqueKey(),
-        /*  background: Container(
-          color: Colors.red,
-        ),*/
-        //       onDismissed: (direccion) => garageBloc.borrarProducto(garage.id),
-        child: Card(
+  Widget _botonMisVehiculos() {
+    return RaisedButton(
+        child: Container(
+          padding: EdgeInsets.all(15.0),
+          child: Text('Mis Vehiculos'),
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+        elevation: 0.0,
+        color: Colors.grey[700],
+        textColor: Colors.white,
+        onPressed: () => Navigator.pushNamed(context, 'misvehiculos'));
+  }
+
+  Widget _botonHojaVidaVehiculos() {
+    return RaisedButton(
+        child: Container(
+          padding: EdgeInsets.all(15.0),
+          child: Text('Hoja de vida de mis vehiculos'),
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+        elevation: 0.0,
+        color: Colors.grey[700],
+        textColor: Colors.white,
+        onPressed: () {});
+  }
+
+  Widget _listaBotones() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 110.0),
       child: Column(
-        children: <Widget>[
-          (garage.fotoUrl == null)
-              ? Image(image: AssetImage('assets/no-image.png'))
-              : FadeInImage(
-                  image: NetworkImage(garage.fotoUrl),
-                  placeholder: AssetImage('assets/jar-loading.gif'),
-                  height: 300.0,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-          //   Row(
-          //  children: <Widget>[
-          /* ListTile(
-            title: Text('${garage.titulo} - Cantidad: ${garage.stock}'),
-            subtitle: Text('\$' + garage.valor.toString()),
-            onTap: () =>
-                Navigator.pushNamed(context, 'detalle', arguments: garage),
-          ),*/
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(height: 50.0),
+          _botonTableroControl(),
+          SizedBox(height: 50.0),
+          _botonMisVehiculos(),
+          SizedBox(height: 50.0),
+          _botonHojaVidaVehiculos()
         ],
       ),
-      //  ],
-      //),
-    ));
-  }*/
+    );
+  }
 }

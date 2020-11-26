@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:formvalidation/src/bloc/garage_bloc.dart';
 import 'package:formvalidation/src/bloc/provider.dart';
+import 'package:formvalidation/src/models/garage_model.dart';
+
 import 'package:image_picker/image_picker.dart';
 
 import 'package:formvalidation/src/models/producto_model.dart';
@@ -16,34 +19,26 @@ class _ProductoPageState extends State<ProductoPage> {
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  ProductosBloc productosBloc;
-  ProductoModel producto = new ProductoModel();
+  GarageBloc garageBloc;
+  GarageModel garage = new GarageModel();
+
   bool _guardando = false;
   File foto;
 
   @override
   Widget build(BuildContext context) {
-    productosBloc = Provider.productosBloc(context);
+    garageBloc = Provider.garageBloc(context);
 
-    final ProductoModel prodData = ModalRoute.of(context).settings.arguments;
+    final GarageModel prodData = ModalRoute.of(context).settings.arguments;
     if (prodData != null) {
-      producto = prodData;
+      garage = prodData;
     }
 
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
         title: Text('Producto'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.photo_size_select_actual),
-            onPressed: _seleccionarFoto,
-          ),
-          IconButton(
-            icon: Icon(Icons.camera_alt),
-            onPressed: _tomarFoto,
-          ),
-        ],
+        actions: <Widget>[],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -52,11 +47,10 @@ class _ProductoPageState extends State<ProductoPage> {
             key: formKey,
             child: Column(
               children: <Widget>[
-                _mostrarFoto(),
-                _crearNombre(),
-                _crearPrecio(),
-                _crearStock(),
-                _crearDisponible(),
+                _crearModelo(),
+                _crearFecha(),
+                _crearVin(),
+                _crearKilometros(),
                 _crearBoton()
               ],
             ),
@@ -66,15 +60,15 @@ class _ProductoPageState extends State<ProductoPage> {
     );
   }
 
-  Widget _crearNombre() {
+  Widget _crearModelo() {
     return TextFormField(
-      initialValue: producto.titulo,
+      initialValue: garage.modelo.toString(),
       textCapitalization: TextCapitalization.sentences,
-      decoration: InputDecoration(labelText: 'Producto'),
-      onSaved: (value) => producto.titulo = value,
+      decoration: InputDecoration(labelText: 'Vin'),
+      onSaved: (value) => garage.modelo = value,
       validator: (value) {
         if (value.length < 3) {
-          return 'Ingrese el nombre del producto';
+          return 'Ingrese el nombre del garage';
         } else {
           return null;
         }
@@ -82,12 +76,28 @@ class _ProductoPageState extends State<ProductoPage> {
     );
   }
 
-  Widget _crearPrecio() {
+  Widget _crearFecha() {
     return TextFormField(
-      initialValue: producto.valor.toString(),
+      initialValue: garage.fecha.toString(),
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(labelText: 'Vin'),
+      onSaved: (value) => garage.fecha = value,
+      validator: (value) {
+        if (value.length < 3) {
+          return 'Ingrese el nombre del garage';
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+
+  Widget _crearVin() {
+    return TextFormField(
+      initialValue: garage.vin.toString(),
       keyboardType: TextInputType.numberWithOptions(decimal: false),
-      decoration: InputDecoration(labelText: 'Precio'),
-      onSaved: (value) => producto.valor = int.parse(value),
+      decoration: InputDecoration(labelText: 'Vin'),
+      onSaved: (value) => garage.vin = int.parse(value),
       validator: (value) {
         if (utils.isNumeric(value)) {
           return null;
@@ -95,17 +105,6 @@ class _ProductoPageState extends State<ProductoPage> {
           return 'Sólo números';
         }
       },
-    );
-  }
-
-  Widget _crearDisponible() {
-    return SwitchListTile(
-      value: producto.disponible,
-      title: Text('Disponible'),
-      activeColor: Colors.grey[700],
-      onChanged: (value) => setState(() {
-        producto.disponible = value;
-      }),
     );
   }
 
@@ -129,14 +128,10 @@ class _ProductoPageState extends State<ProductoPage> {
       _guardando = true;
     });
 
-    if (foto != null) {
-      producto.fotoUrl = await productosBloc.subirFoto(foto);
-    }
-
-    if (producto.id == null) {
-      productosBloc.agregarProducto(producto);
+    if (garage.name == null) {
+      garageBloc.agregarGarage(garage);
     } else {
-      productosBloc.editarProducto(producto);
+      garageBloc.editarGarage(garage);
     }
 
     // setState(() {_guardando = false; });
@@ -154,51 +149,12 @@ class _ProductoPageState extends State<ProductoPage> {
     scaffoldKey.currentState.showSnackBar(snackbar);
   }
 
-  Widget _mostrarFoto() {
-    if (producto.fotoUrl != null) {
-      return FadeInImage(
-        image: NetworkImage(producto.fotoUrl),
-        placeholder: AssetImage('assets/jar-loading.gif'),
-        height: 300.0,
-        fit: BoxFit.contain,
-      );
-    } else {
-      return Image(
-        image: AssetImage(foto?.path ?? 'assets/no-image.png'),
-        height: 300.0,
-        fit: BoxFit.cover,
-      );
-    }
-  }
-
-  _seleccionarFoto() async {
-    _procesarImagen(ImageSource.gallery);
-  }
-
-  _tomarFoto() async {
-    _procesarImagen(ImageSource.camera);
-  }
-
-  _procesarImagen(ImageSource origen) async {
-    final pickedFile = await ImagePicker.pickImage(
-      source: origen,
-    );
-
-    foto = File(pickedFile.path);
-
-    if (foto != null) {
-      producto.fotoUrl = null;
-    }
-
-    setState(() {});
-  }
-
-  _crearStock() {
+  _crearKilometros() {
     return TextFormField(
-      initialValue: producto.valor.toString(),
-      keyboardType: TextInputType.numberWithOptions(decimal: false),
+      initialValue: garage.kilometros.toString(),
+      keyboardType: TextInputType.numberWithOptions(decimal: true),
       decoration: InputDecoration(labelText: 'Precio'),
-      onSaved: (value) => producto.valor = int.parse(value),
+      onSaved: (value) => garage.kilometros = double.parse(value),
       validator: (value) {
         if (utils.isNumeric(value)) {
           return null;

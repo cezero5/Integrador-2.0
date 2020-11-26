@@ -115,23 +115,18 @@ class _HomePageState extends State<HomePage> {
             onTap: () => Navigator.pushNamed(context, 'garagepage'),
           ),
           ListTile(
-            leading: Icon(Icons.time_to_leave, color: Colors.grey[700]),
-            title: Text('Garage'),
+            leading: Icon(Icons.card_giftcard, color: Colors.grey[700]),
+            title: Text('Cupones'),
             onTap: () {},
           ),
           ListTile(
-            leading: Icon(Icons.time_to_leave, color: Colors.grey[700]),
-            title: Text('Garage'),
+            leading: Icon(Icons.shopping_bag, color: Colors.grey[700]),
+            title: Text('Mis compras'),
             onTap: () {},
           ),
           ListTile(
-            leading: Icon(Icons.time_to_leave, color: Colors.grey[700]),
-            title: Text('Garage'),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: Icon(Icons.time_to_leave, color: Colors.grey[700]),
-            title: Text('Garage'),
+            leading: Icon(Icons.favorite_border, color: Colors.grey[700]),
+            title: Text('Lista de deseados'),
             onTap: () {},
           ),
           ListTile(

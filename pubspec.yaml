@@ -30,6 +30,7 @@ dependencies:
   mime_type:
   shared_preferences: ^0.5.6+1
   provider: ^4.3.1
+  dio: ^3.0.10
 
 dev_dependencies:
   flutter_test:

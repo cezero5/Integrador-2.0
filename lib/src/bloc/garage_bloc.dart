@@ -33,11 +33,11 @@ class GarageBloc {
     return fotoUrl;
   }
 
-  /*void editarProducto(GarageModel garage) async {
+  void editarGarage(GarageModel garage) async {
     _cargandoController.sink.add(true);
-    await _productosProvider.editarProducto(garage);
+    await _garageProvider.editarProducto(garage);
     _cargandoController.sink.add(false);
-  }*/
+  }
 
   /*void borrarProducto( String id ) async {
 
