@@ -4,24 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:formvalidation/src/bloc/garage_bloc.dart';
 import 'package:formvalidation/src/bloc/provider.dart';
 import 'package:formvalidation/src/models/garage_model.dart';
-
-import 'package:image_picker/image_picker.dart';
-
-import 'package:formvalidation/src/models/producto_model.dart';
+import 'package:formvalidation/src/providers/garage_provider.dart';
 import 'package:formvalidation/src/utils/utils.dart' as utils;
 
-class ProductoPage extends StatefulWidget {
+class HojaVidaMisVehiculosPage extends StatefulWidget {
   @override
-  _ProductoPageState createState() => _ProductoPageState();
+  _HojaVidaMisVehiculosPage createState() => _HojaVidaMisVehiculosPage();
 }
 
-class _ProductoPageState extends State<ProductoPage> {
+class _HojaVidaMisVehiculosPage extends State<HojaVidaMisVehiculosPage> {
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   GarageBloc garageBloc;
   GarageModel garage = new GarageModel();
-
+  GarageProvider garageProvider = new GarageProvider();
   bool _guardando = false;
   File foto;
 
@@ -47,10 +44,10 @@ class _ProductoPageState extends State<ProductoPage> {
             key: formKey,
             child: Column(
               children: <Widget>[
-                _crearModelo(),
-                _crearFecha(),
                 _crearVin(),
+                _crearFecha(),
                 _crearKilometros(),
+                _crearModelo(),
                 _crearBoton()
               ],
             ),
@@ -62,9 +59,9 @@ class _ProductoPageState extends State<ProductoPage> {
 
   Widget _crearModelo() {
     return TextFormField(
-      initialValue: garage.modelo.toString(),
+      initialValue: garage.modelo,
       textCapitalization: TextCapitalization.sentences,
-      decoration: InputDecoration(labelText: 'Vin'),
+      decoration: InputDecoration(labelText: 'Modelo'),
       onSaved: (value) => garage.modelo = value,
       validator: (value) {
         if (value.length < 3) {
@@ -78,9 +75,9 @@ class _ProductoPageState extends State<ProductoPage> {
 
   Widget _crearFecha() {
     return TextFormField(
-      initialValue: garage.fecha.toString(),
+      initialValue: garage.fecha,
       textCapitalization: TextCapitalization.sentences,
-      decoration: InputDecoration(labelText: 'Vin'),
+      decoration: InputDecoration(labelText: 'Fecha de cambio de aceite'),
       onSaved: (value) => garage.fecha = value,
       validator: (value) {
         if (value.length < 3) {
@@ -98,6 +95,22 @@ class _ProductoPageState extends State<ProductoPage> {
       keyboardType: TextInputType.numberWithOptions(decimal: false),
       decoration: InputDecoration(labelText: 'Vin'),
       onSaved: (value) => garage.vin = int.parse(value),
+      validator: (value) {
+        if (utils.isNumeric(value)) {
+          return null;
+        } else {
+          return 'Sólo números';
+        }
+      },
+    );
+  }
+
+  _crearKilometros() {
+    return TextFormField(
+      initialValue: garage.kilometros.toString(),
+      keyboardType: TextInputType.numberWithOptions(decimal: true),
+      decoration: InputDecoration(labelText: 'Kilometros'),
+      onSaved: (value) => garage.kilometros = double.parse(value),
       validator: (value) {
         if (utils.isNumeric(value)) {
           return null;
@@ -128,8 +141,8 @@ class _ProductoPageState extends State<ProductoPage> {
       _guardando = true;
     });
 
-    if (garage.name == null) {
-      garageBloc.agregarGarage(garage);
+    if (garage.id == null) {
+      garageProvider.crearGarage(garage);
     } else {
       garageBloc.editarGarage(garage);
     }
@@ -147,21 +160,5 @@ class _ProductoPageState extends State<ProductoPage> {
     );
 
     scaffoldKey.currentState.showSnackBar(snackbar);
-  }
-
-  _crearKilometros() {
-    return TextFormField(
-      initialValue: garage.kilometros.toString(),
-      keyboardType: TextInputType.numberWithOptions(decimal: true),
-      decoration: InputDecoration(labelText: 'Precio'),
-      onSaved: (value) => garage.kilometros = double.parse(value),
-      validator: (value) {
-        if (utils.isNumeric(value)) {
-          return null;
-        } else {
-          return 'Sólo números';
-        }
-      },
-    );
   }
 }

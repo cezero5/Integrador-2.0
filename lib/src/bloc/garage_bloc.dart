@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:formvalidation/src/models/garage_model.dart';
-import 'package:formvalidation/src/providers/garage_providers.dart';
+import 'package:formvalidation/src/providers/garage_provider.dart';
 
 import 'package:rxdart/rxdart.dart';
 

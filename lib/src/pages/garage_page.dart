@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:formvalidation/src/bloc/garage_bloc.dart';
+
 import 'package:formvalidation/src/bloc/provider.dart';
-import 'package:formvalidation/src/models/garage_model.dart';
+
 import 'package:formvalidation/src/search/search_delegate.dart';
 
 class GaragePage extends StatefulWidget {
@@ -72,7 +72,7 @@ class _GaragePageState extends State<GaragePage> {
         elevation: 0.0,
         color: Colors.grey[700],
         textColor: Colors.white,
-        onPressed: () {});
+        onPressed: () => Navigator.pushNamed(context, 'hojavidavehi'));
   }
 
   Widget _listaBotones() {
