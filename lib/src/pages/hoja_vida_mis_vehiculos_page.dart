@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:formvalidation/src/bloc/garage_bloc.dart';
 import 'package:formvalidation/src/bloc/provider.dart';
+
 import 'package:formvalidation/src/models/garage_model.dart';
-import 'package:formvalidation/src/providers/garage_provider.dart';
+
 import 'package:formvalidation/src/utils/utils.dart' as utils;
 
 class HojaVidaMisVehiculosPage extends StatefulWidget {
@@ -14,21 +15,20 @@ class HojaVidaMisVehiculosPage extends StatefulWidget {
 
 class _HojaVidaMisVehiculosPage extends State<HojaVidaMisVehiculosPage> {
   final formKey = GlobalKey<FormState>();
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   GarageBloc garageBloc;
   GarageModel garage = new GarageModel();
-  GarageProvider garageProvider = new GarageProvider();
   bool _guardando = false;
-  File foto;
 
   @override
   Widget build(BuildContext context) {
     garageBloc = Provider.garageBloc(context);
 
-    final GarageModel prodData = ModalRoute.of(context).settings.arguments;
-    if (prodData != null) {
-      garage = prodData;
+    final GarageModel garageData = ModalRoute.of(context).settings.arguments;
+    if (garageData != null) {
+      garage = garageData;
     }
 
     return Scaffold(
@@ -91,15 +91,15 @@ class _HojaVidaMisVehiculosPage extends State<HojaVidaMisVehiculosPage> {
 
   Widget _crearVin() {
     return TextFormField(
-      initialValue: garage.vin.toString(),
+      initialValue: garage.vin,
       keyboardType: TextInputType.numberWithOptions(decimal: false),
       decoration: InputDecoration(labelText: 'Vin'),
-      onSaved: (value) => garage.vin = int.parse(value),
+      onSaved: (value) => garage.vin = value,
       validator: (value) {
-        if (utils.isNumeric(value)) {
-          return null;
+        if (value.length < 3) {
+          return 'Ingresar vin';
         } else {
-          return 'Sólo números';
+          return null;
         }
       },
     );
@@ -142,7 +142,7 @@ class _HojaVidaMisVehiculosPage extends State<HojaVidaMisVehiculosPage> {
     });
 
     if (garage.id == null) {
-      garageProvider.crearGarage(garage);
+      garageBloc.agregarGarage(garage);
     } else {
       garageBloc.editarGarage(garage);
     }

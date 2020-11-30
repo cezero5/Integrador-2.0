@@ -26,7 +26,7 @@ class ProductosProvider {
   }
 
   Future<bool> editarProducto(ProductoModel producto) async {
-    final url = '$_url/productos/${producto.id}.json?auth=${_prefs.token}';
+    final url = '$_url/productos/${producto.id}.json';
 
     final resp = await http.put(url, body: productoModelToJson(producto));
 
@@ -48,14 +48,14 @@ class ProductosProvider {
 
     if (decodedData['error'] != null) return [];
 
-    decodedData.forEach((id, prod) {
-      final prodTemp = ProductoModel.fromJson(prod);
-      prodTemp.id = id;
+    decodedData.forEach(
+      (id, prod) {
+        final prodTemp = ProductoModel.fromJson(prod);
+        prodTemp.id = id;
 
-      productos.add(prodTemp);
-    });
-
-    // print( productos[0].id );
+        productos.add(prodTemp);
+      },
+    );
 
     return productos;
   }

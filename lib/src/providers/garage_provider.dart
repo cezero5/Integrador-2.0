@@ -1,19 +1,16 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:formvalidation/src/models/garage_model.dart';
 import 'package:formvalidation/src/preferencias_usuario/preferencias_usuario.dart';
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
 
-import 'package:mime_type/mime_type.dart';
+import 'package:formvalidation/src/models/garage_model.dart';
 
 class GarageProvider {
   final String _url = 'https://flutter-varios-d2538.firebaseio.com';
   final _prefs = new PreferenciasUsuario();
 
   Future<bool> crearGarage(GarageModel garage) async {
-    final url = '$_url/personas.json';
+    final url = '$_url/vehiculos.json?auth=${_prefs.token}';
 
     final resp = await http.post(url, body: garageModelToJson(garage));
 
@@ -24,8 +21,8 @@ class GarageProvider {
     return true;
   }
 
-  Future<bool> editarProducto(GarageModel garage) async {
-    final url = '$_url/personas/${garage.id}.json?auth=${_prefs.token}';
+  Future<bool> editarGarage(GarageModel garage) async {
+    final url = '$_url/vehiculos/${garage.id}.json';
 
     final resp = await http.put(url, body: garageModelToJson(garage));
 
@@ -37,7 +34,7 @@ class GarageProvider {
   }
 
   Future<List<GarageModel>> cargarGarage() async {
-    final url = '$_url/personas.json?auth=${_prefs.token}';
+    final url = '$_url/vehiculos.json?auth=${_prefs.token}';
     final resp = await http.get(url);
 
     final Map<String, dynamic> decodedData = json.decode(resp.body);
@@ -68,7 +65,7 @@ class GarageProvider {
     return 1;
   }*/
 
-  Future<String> subirImagen(File imagen) async {
+  /* Future<String> subirImagen(File imagen) async {
     final url = Uri.parse(
         'https://api.cloudinary.com/v1_1/dh3e6oczl/image/upload?upload_preset=jlye7wzx');
     final mimeType = mime(imagen.path).split('/'); //image/jpeg
@@ -93,7 +90,7 @@ class GarageProvider {
     print(respData);
 
     return respData['secure_url'];
-  }
+  }*/
 
   /*Future<List<GarageModel>> _procesarRespuesta(Uri url) async {
     final resp = await http.get(url);
@@ -101,10 +98,10 @@ class GarageProvider {
     final garage = new GarageModel.fromJson(decodedData['results']);
 
     return garage;
-  }*/
+  }
 
   Future<List<GarageModel>> buscarGarage(String query) async {
-    String _url = 'https://flutter-varios-d2538.firebaseio.com/personas';
+    String _url = 'https://flutter-varios-d2538.firebaseio.com/vehiculos';
     final url = Uri.https(_url, 'AIzaSyDL4dolvRlp9ZNz3kkYg3za2Uyvc4I_hlY');
 
     final resp = await http.get(url);
@@ -112,5 +109,5 @@ class GarageProvider {
     final garage = decodedData;
 
     return await garage;
-  }
+  }*/
 }

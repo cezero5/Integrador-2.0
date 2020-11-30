@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:formvalidation/src/models/garage_model.dart';
 import 'package:formvalidation/src/providers/garage_provider.dart';
 
@@ -14,7 +12,7 @@ class GarageBloc {
   Stream<List<GarageModel>> get productosStream => _garageController.stream;
   Stream<bool> get cargando => _cargandoController.stream;
 
-  void cargarProductos() async {
+  void cargarGarage() async {
     final garages = await _garageProvider.cargarGarage();
     _garageController.sink.add(garages);
   }
@@ -25,17 +23,17 @@ class GarageBloc {
     _cargandoController.sink.add(false);
   }
 
-  Future<String> subirFoto(File foto) async {
+  /*Future<String> subirFoto(File foto) async {
     _cargandoController.sink.add(true);
     final fotoUrl = await _garageProvider.subirImagen(foto);
     _cargandoController.sink.add(false);
 
     return fotoUrl;
-  }
+  }*/
 
   void editarGarage(GarageModel garage) async {
     _cargandoController.sink.add(true);
-    await _garageProvider.editarProducto(garage);
+    await _garageProvider.editarGarage(garage);
     _cargandoController.sink.add(false);
   }
 

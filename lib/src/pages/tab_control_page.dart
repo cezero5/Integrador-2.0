@@ -44,20 +44,31 @@ class _TableroControlState extends State<TableroControl> {
 
   Widget _tablaControl(
       BuildContext conctext, GarageBloc garageBl, GarageModel garageM) {
-    return Center(
-      child: Card(
+    return Dismissible(
+      key: UniqueKey(),
+      child: ListTile(
+        key: UniqueKey(),
         //margin: EdgeInsetsGeometry.lerp(a, b, t),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Text("Mis vehiculos",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0)),
-            Text('Vin: ${garageM.vin} ',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0)),
-            Text('kilometros: ${garageM.kilometros}',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0)),
-          ],
+        title: Card(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Mis vehiculos",
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0)),
+              Text('Vin: ${garageM.vin} ', style: TextStyle(fontSize: 20.0)),
+              Text('kilometros: ${garageM.kilometros}',
+                  style: TextStyle(fontSize: 20.0)),
+              Text('Proximo cambio de aceite: ${garageM.fecha}',
+                  style: TextStyle(fontSize: 20.0)),
+              Text('Modelo: ${garageM.modelo}',
+                  style: TextStyle(fontSize: 20.0)),
+            ],
+          ),
         ),
+        onTap: () =>
+            Navigator.pushNamed(context, 'hojavidavehi', arguments: garageM),
       ),
     );
   }

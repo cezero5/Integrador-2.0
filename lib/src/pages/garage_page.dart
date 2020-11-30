@@ -13,7 +13,7 @@ class _GaragePageState extends State<GaragePage> {
   @override
   Widget build(BuildContext context) {
     final garageBloc = Provider.garageBloc(context);
-    garageBloc.cargarProductos();
+    garageBloc.cargarGarage();
 
     return Scaffold(
       appBar: AppBar(

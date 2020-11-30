@@ -69,6 +69,9 @@ class PageDetalle extends StatelessWidget {
                   overflow: TextOverflow.ellipsis),
             ],
           ),
+          SizedBox(height: 10.0),
+          Text('Vin: ${producto.vin}',
+              style: TextStyle(fontSize: 23), overflow: TextOverflow.ellipsis),
         ],
       ),
     );

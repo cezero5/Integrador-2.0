@@ -7,14 +7,14 @@ String garageModelToJson(GarageModel data) => json.encode(data.toJson());
 
 class GarageModel {
   String id;
-  int vin;
+  String vin;
   double kilometros;
   String fecha;
   String modelo;
 
   GarageModel({
     this.id = '',
-    this.vin = 0,
+    this.vin = '',
     this.kilometros = 0.0,
     this.fecha = '',
     this.modelo = '',
@@ -29,7 +29,7 @@ class GarageModel {
       );
 
   Map<String, dynamic> toJson() => {
-        // "name": name,
+        //"id": id,
         "vin": vin,
         "kilometros": kilometros,
         "fecha": fecha,
